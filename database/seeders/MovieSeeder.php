@@ -33,7 +33,7 @@ class MovieSeeder extends Seeder
             'id' => 3,
             'title' => 'Wind Breaker',
             'genre_id' => 3,
-            'poster' => 'movie-01.jpg',
+            'poster' => 'movie-03.jpg',
             'synopsis' => 'Haruka Sakura wants nothing to do with weaklings—hes only interested in the strongest of the strong.',
         ]);
     }

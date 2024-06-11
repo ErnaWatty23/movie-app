@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('movie_id');
             $table->string('user');
             $table->string('rating');
-            $table->text('date')->nullable();
+            $table->string('date')->nullable();
             $table->timestamps();
         });
     }

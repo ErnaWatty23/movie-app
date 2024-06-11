@@ -54,17 +54,19 @@
                 <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div class="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                         <h3 class="font-medium text-black dark:text-white">
-                            Review Form
+                            Movie Form
                         </h3>
                     </div>
-                    <form action="/reviews" method="POST">
+                    <form action="/movies/{{ $movie->id }}" method="POST">
                         @csrf
+                        @method('PUT')
                         <div class="p-6.5">
                             <div class="mb-4.5">
-                                <label class="mb-3 block text-sm font-medium text-black dark:text-white"> Movie Title <span class="text-meta-1">*</span> </label>
+                                <label class="mb-3 block text-sm font-medium text-black dark:text-white"> Name <span class="text-meta-1">*</span> </label>
                                 <input
-                                    id="movie_id"
-                                    name="movie_id"
+                                    id="title"
+                                    name="title"
+                                    value="{{$movie->title}}"
                                     type="text"
                                     placeholder="Enter anime title"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -72,36 +74,61 @@
                             </div>
 
                             <div class="mb-4.5">
-                                <label class="mb-3 block text-sm font-medium text-black dark:text-white"> User <span class="text-meta-1">*</span> </label>
-                                <input
-                                    id="user"
-                                    name="user"
-                                    type="text"
-                                    placeholder="Enter anime user"
-                                    class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                />
+                                <label class="mb-3 block text-sm font-medium text-black dark:text-white"> Genre <span class="text-meta-1">*</span> </label>
+                                <div x-data="{ isOptionSelected: false }" class="relative z-20 bg-transparent dark:bg-form-input">
+                                    <select
+                                        id="genre_id"
+                                        name="genre_id"
+                                        class="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                        :class="isOptionSelected && 'text-black dark:text-white'"
+                                        @change="isOptionSelected = true"
+                                    >
+                                        <option value="" class="text-body">
+                                            Type your genre
+                                        </option>
+                                        @foreach ($genres as $genre)
+                                            <option value="{{ $genre->id }}" {{ $genre->id == $movie->genre_id ? 'selected' : '' }}>{{ $genre->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="absolute right-4 top-1/2 z-30 -translate-y-1/2">
+                                        <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g opacity="0.8">
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    clip-rule="evenodd"
+                                                    d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                                                    fill=""
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </div>
                             </div>
 
                             <div class="mb-4.5">
-                                <label class="mb-3 block text-sm font-medium text-black dark:text-white"> Rating <span class="text-meta-1">*</span> </label>
+                                <label class="mb-3 block text-sm font-medium text-black dark:text-white"> 
+                                    Poster 
+                                    <span class="text-meta-1">*</span> 
+                                </label>
                                 <input
-                                    id="rating"
-                                    name="rating"
+                                    id="poster"
+                                    name="poster"
+                                    value="{{$movie->poster}}"
                                     type="text"
-                                    placeholder="Enter rating "
+                                    placeholder="Enter poster link"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                 />
                             </div>
 
                             <div class="mb-6">
-                                <label class="mb-3 block text-sm font-medium text-black dark:text-white"> Date <span class="text-meta-1">*</span> </label>
+                                <label class="mb-3 block text-sm font-medium text-black dark:text-white"> Synopsis <span class="text-meta-1">*</span> </label>
                                 <textarea
-                                    id="date"
-                                    name="date"
+                                    id="synopsis"
+                                    name="synopsis"
                                     rows="6"
-                                    placeholder="Type anime date"
+                                    placeholder="Type anime synopsis"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                ></textarea>
+                                >{{$movie->synopsis}}</textarea>
                             </div>
 
                             <button type="submit" class="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
